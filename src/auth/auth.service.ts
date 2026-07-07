@@ -1,21 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { UserType } from './interfaces/user';
 import { UserRegister } from './dto/user';
+import { DRIZZLE } from 'src/db/db.module';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import * as schema from '../db/schema';
+
 @Injectable()
 export class AuthService {
-  private readonly users: UserType[] = [
-    { id: 1, username: 'yuki', password: '123456' },
-    { id: 2, username: 'hajime', password: '123456' },
-    { id: 3, username: 'suzuni', password: '123456' },
-    { id: 4, username: 'makoto', password: '123456' },
-    { id: 5, username: 'subaru', password: '123456' },
-  ];
-  createUser(user: UserRegister) {
-    const newUser = {
-      id: Math.floor(Math.random() * 100000),
-      username: user.username,
-      password: user.password,
-    };
-    this.users.push(newUser);
+  constructor(
+    @Inject(DRIZZLE) private readonly db: NodePgDatabase<typeof schema>,
+  ) {}
+  async createUser(user: UserRegister) {
+    const [newUser] = await this.db
+      .insert(schema.users)
+      .values({
+        username: user.username,
+        password: user.password,
+      })
+      .returning();
+    return newUser;
+  }
+  async getUser(): Promise<any> {
+    const users = this.db.select().from(schema.users);
+    return users;
   }
 }

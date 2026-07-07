@@ -6,8 +6,8 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Get()
-  getUser(): string {
-    return 'username';
+  getUser(): any {
+    return this.authService.getUser();
   }
   @Post('/signin')
   getSignin(@Body() loginUser: user.UserLogin) {
@@ -15,7 +15,6 @@ export class AuthController {
   }
   @Post('/signup')
   async register(@Body() newUser: user.UserRegister) {
-    this.authService.createUser(newUser);
-    return 'signup';
+    return this.authService.createUser(newUser);
   }
 }

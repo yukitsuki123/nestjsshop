@@ -5,11 +5,11 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+  url = env("DATABASE_URL")
 }
 
 enum InventoryStatus {
@@ -21,6 +21,7 @@ enum InventoryStatus {
 model User {
   id String @id @default(uuid())
   email String @unique
+  username String @unique
   password String?
   createdAt DateTime @default(now())
   categories Category[]
