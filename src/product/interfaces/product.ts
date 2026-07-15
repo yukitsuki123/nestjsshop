@@ -1,5 +1,9 @@
 export interface ProductType {
-  id: number;
-  name: string;
-  price: number;
+  id: string
+  name:string
+  slug:string
+  costPrice:number
+  sellingPrice:number
+  categoryId:string
+  userId:string
 }

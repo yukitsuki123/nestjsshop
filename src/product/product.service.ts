@@ -1,19 +1,27 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ProductType } from './interfaces/product';
-
+import { DRIZZLE } from 'src/db/db.module';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import { CreateCategory } from './dto/create-product.dto';
+import * as schema from '../db/schema'
 @Injectable()
 export class ProductService {
-  private readonly products: ProductType[] = [
-    { id: 1, name: 'Razer mouse', price: 30 },
-    { id: 2, name: 'Razer keyboard', price: 33 },
-    { id: 3, name: 'Razer pad', price: 35 },
-    { id: 4, name: 'Razer headset', price: 36 },
-  ];
+  constructor(@Inject(DRIZZLE) private readonly db:NodePgDatabase){}
   createProduct(product: ProductType) {
-    this.products.push(product);
+    
+  }
+  async createCategory(category:CreateCategory){
+    const [newCategory] = await this.db
+          .insert(schema.categories)
+          .values({
+            name:category.name,
+            userId:category.userId
+          })
+          .returning();
+        return newCategory;
   }
   findOne(id: number): ProductType {
-    const prod = this.products.find((p) => p.id == id);
+    const prod = null
     if (!prod) {
       throw new NotFoundException(`Product with id:${id} not found`);
     }

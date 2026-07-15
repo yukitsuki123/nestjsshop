@@ -14,7 +14,7 @@ export const DRIZZLE = 'DRIZZLE';
         const pool = new Pool({
           connectionString: process.env.DATABASE_URL,
         });
-        return drizzle(pool, { schema });
+        return drizzle({client:pool,schema});
       },
     },
   ],

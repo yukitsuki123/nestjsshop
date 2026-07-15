@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm/_relations';
+import { relations } from 'drizzle-orm';
 import { numeric } from 'drizzle-orm/pg-core';
 import { uuid } from 'drizzle-orm/pg-core';
 import { pgTable, serial, varchar, integer } from 'drizzle-orm/pg-core';
@@ -29,9 +29,13 @@ export const product = pgTable('products',{
 
 // junction table
 
-export const category_product = relations(product,({one,many})=>({
+export const productRelations  = relations(product,({one})=>({
   category:one(categories,{
-    fields:[product.id],
+    fields:[product.categoryId],
     references:[categories.id]
   })
 }))
+export const categoriesRelations = relations(categories, ({ many }) => ({
+  products: many(product),
+}));
+
