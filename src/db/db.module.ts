@@ -1,7 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
-import * as schema from './schema';
+import { relations } from './schema'; // the defineRelations export
 
 export const DRIZZLE = 'DRIZZLE';
 
@@ -14,7 +14,7 @@ export const DRIZZLE = 'DRIZZLE';
         const pool = new Pool({
           connectionString: process.env.DATABASE_URL,
         });
-        return drizzle({client:pool,schema});
+        return drizzle({ client: pool, relations }); // ✅ relations, not schema
       },
     },
   ],
