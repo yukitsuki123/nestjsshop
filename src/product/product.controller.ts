@@ -13,5 +13,4 @@ export class ProductController {
   getProduct(@Param() params: { id: number }) {
     return this.productsService.findOne(params.id);
   }
-  
 }

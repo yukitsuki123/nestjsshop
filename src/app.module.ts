@@ -16,7 +16,7 @@ import { ImagesModule } from './images/images.module';
     ProductModule,
     AuthModule,
     CategoryModule,
-    ImagesModule
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,12 +5,12 @@ import { CategoryService } from './category.service';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
   @Post()
-  async createCat(@Body() categ:createCategoryDTO.CreateCategory){
-    return this.categoryService.createCategory(categ)
+  async createCat(@Body() categ: createCategoryDTO.CreateCategory) {
+    return this.categoryService.createCategory(categ);
   }
   @Get()
   async find() {
-    return this.categoryService.findAll()
+    return this.categoryService.findAll();
   }
   @Get(':id')
   getCategory(@Param() params: { id: string }) {

@@ -1,4 +1,4 @@
-export interface CreateCategory{
-    name:string;
-    userId:string
+export interface CreateCategory {
+  name: string;
+  userId: string;
 }

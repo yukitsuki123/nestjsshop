@@ -27,10 +27,10 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(
-      IS_PUBLIC_KEY,
-      [context.getHandler(), context.getClass()],
-    );
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
     if (isPublic) return true;
 
     const request = context.switchToHttp().getRequest<Request>();
@@ -39,14 +39,15 @@ export class AuthGuard implements CanActivate {
     if (!token) {
       throw new UnauthorizedException('No token provided');
     }
-
+    console.log(token);
     try {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_SECRET,
       });
 
       (request as any).user = payload;
-    } catch {
+    } catch (error) {
+      console.log(error);
       throw new UnauthorizedException('Invalid or expired token');
     }
 
